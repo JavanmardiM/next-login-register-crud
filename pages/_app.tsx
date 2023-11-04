@@ -1,9 +1,6 @@
-import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Provider } from "react-redux";
 import { ReactQueryDevtools } from "react-query/devtools";
-// import store from "@/store";
 import type { AppProps } from "next/app";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import "../styles/globals.css";
@@ -34,7 +31,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     const publicPaths = ["/auth/login", "/auth/register"];
     const path = url.split("?")[0];
     if (!isLoggedIn && !publicPaths.includes(path)) {
-      // if (!authService.userValue && !publicPaths.includes(path)) {
       setIsAuthorized(false);
       router.push({
         pathname: "/auth/login",
@@ -59,7 +55,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   const initiateApiHeader = () => {
     let token = typeof window !== "undefined" && storage.getToken();
     if (token) {
-      // userContextAction(userDispatcher.setUser(token));
       userAPI.defaults.headers["Authorization"] = `Bearer ${token}`;
       userAPI.defaults.headers.Authorization = `Bearer ${token}`;
     } else {
@@ -76,9 +71,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
-          {/* <Provider store={store}> */}
           {isAuthorized && <Component {...pageProps} />}
-          {/* </Provider> */}
         </Hydrate>
         <ReactQueryDevtools />
       </QueryClientProvider>

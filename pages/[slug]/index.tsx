@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "react-query";
+import { useQueryClient } from "react-query";
 import Image from "next/image";
 import { Post } from "@/models/Post";
 import { useRouter } from "next/router";

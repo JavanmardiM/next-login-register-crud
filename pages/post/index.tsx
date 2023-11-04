@@ -5,8 +5,7 @@ import PostForm from "@/components/post/PostForm";
 import { PostDTO } from "@/models/Post";
 import { postService } from "@/services/post";
 
-interface CreatePostProps {}
-const CreatePost = (props: CreatePostProps) => {
+const CreatePost = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 

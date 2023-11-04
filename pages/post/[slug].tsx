@@ -5,10 +5,7 @@ import { Post, PostDTO } from "@/models/Post";
 import { useRouter } from "next/router";
 import { postService } from "@/services/post";
 
-interface EditPostProps {
-  text?: number;
-}
-const EditPost = (props: EditPostProps) => {
+const EditPost = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const postId = router.query.slug as string;
