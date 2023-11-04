@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.green {
+  @apply bg-green-600 after:border-green-600 rounded-full text-white py-2 px-4 text-center;
+}
