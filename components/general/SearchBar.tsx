@@ -1,7 +1,36 @@
 interface searchBarProps {
   text?: number;
+  setSearchText: React.Dispatch<
+    React.SetStateAction<{
+      text: string;
+      isSearching: boolean;
+    }>
+  >;
 }
 const SearchBar = (props: searchBarProps) => {
+  function debounce<Params extends any[]>(
+    func: (...args: Params) => any,
+    timeout: number
+  ): (...args: Params) => void {
+    let timer: NodeJS.Timeout;
+    return (...args: Params) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        func(...args);
+      }, timeout);
+    };
+  }
+
+  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.setSearchText((perv) => ({ ...perv, isSearching: true }));
+    debounce(() => {
+      props.setSearchText(() => ({
+        isSearching: false,
+        text: event.target.value,
+      }));
+    }, 1000)();
+  };
+
   return (
     <>
       <div className="relative mt-5">
@@ -10,6 +39,7 @@ const SearchBar = (props: searchBarProps) => {
           id="password"
           className="w-full pl-3 pr-10 py-2 border-2 border-gray-200 rounded-xl hover:border-gray-300 focus:outline-none focus:border-blue-500 transition-colors"
           placeholder="Search..."
+          onChange={onSearchChange}
         />
         <button className="block w-7 h-7 text-center text-xl leading-0 absolute top-2 right-2 text-gray-400 focus:outline-none hover:text-gray-900 transition-colors">
           <svg
