@@ -4,6 +4,8 @@ import PostForm from "@/components/post/PostForm";
 import { Post, PostDTO } from "@/models/Post";
 import { useRouter } from "next/router";
 import { postService } from "@/services/post";
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 const EditPost = () => {
   const router = useRouter();
@@ -22,6 +24,9 @@ const EditPost = () => {
         router.push({
           pathname: "/",
         });
+      },
+      onError: (e: AxiosError) => {
+        toast.error(`Failed: ${e?.message}`);
       },
     }
   );

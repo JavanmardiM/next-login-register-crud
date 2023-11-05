@@ -4,6 +4,8 @@ import UserLayout from "@/components/layout/UserLayout";
 import PostForm from "@/components/post/PostForm";
 import { PostDTO } from "@/models/Post";
 import { postService } from "@/services/post";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 const CreatePost = () => {
   const router = useRouter();
@@ -17,6 +19,9 @@ const CreatePost = () => {
         router.push({
           pathname: "/",
         });
+      },
+      onError: (e: AxiosError) => {
+        toast.error(`Failed: ${e?.message}`);
       },
     }
   );

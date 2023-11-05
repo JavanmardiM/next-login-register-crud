@@ -8,12 +8,13 @@ import UserLayout from "@/components/layout/UserLayout";
 import SearchBar from "@/components/general/SearchBar";
 import Modal from "@/components/general/Modal";
 import Spinner from "@/components/general/Spinner";
-import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 const HomePage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedPostToDelete, setSselectedPostToDelete] =
+  const [search, setSearch] = useState({ text: "", isSearching: false });
+  const [selectedPostToDelete, setSelectedPostToDelete] =
     React.useState<Post>();
   const queryClient = useQueryClient();
   const { mutate, isLoading, isError } = useMutation(
@@ -22,6 +23,9 @@ const HomePage = () => {
       onSuccess: () => {
         setShowDeleteModal(false);
         queryClient.invalidateQueries("postList");
+      },
+      onError: (e: AxiosError) => {
+        toast.error(`Failed: ${e?.message}`);
       },
     }
   );
@@ -36,7 +40,7 @@ const HomePage = () => {
     const selectedPost: Post = queryClient
       .getQueryData<Post[]>("postList")
       ?.find((item: any) => item.id === postId) as Post;
-    setSselectedPostToDelete(selectedPost);
+    setSelectedPostToDelete(selectedPost);
     setShowDeleteModal(true);
   };
 
@@ -51,19 +55,20 @@ const HomePage = () => {
       refetchOnMount: false,
     }
   );
-  useEffect(() => {
-    if (userListQuery.error) {
-      toast.error(userListQuery.error.message);
-    }
-  }, [userListQuery]);
-  const postPreviews = userListQuery.data?.map((post, index) => (
-    <PostPreview
-      key={post.id}
-      {...post}
-      index={index}
-      handleDeletePost={onDeleteHandler}
-    />
-  ));
+
+  const postPreviews = userListQuery.data
+    ?.filter(
+      (item) =>
+        item.title.includes(search.text) || item.content.includes(search.text)
+    )
+    .map((post, index) => (
+      <PostPreview
+        key={post.id}
+        {...post}
+        index={index}
+        handleDeletePost={onDeleteHandler}
+      />
+    ));
   const deleteBody = (
     <div className="relative p-6 flex-auto">
       <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
@@ -76,7 +81,7 @@ const HomePage = () => {
       <UserLayout>
         <div className="flex flex-col sm:flex-row space-y-5 sm:space-y-0 space-x-4 items-baseline mt-3 max-xl:mx-8">
           <div className="grow h-14 w-full sm:w-1/2">
-            <SearchBar />
+            <SearchBar setSearchText={setSearch} />
           </div>
           <div className="grow-0 h-14">
             <Link
@@ -87,15 +92,18 @@ const HomePage = () => {
             </Link>
           </div>
         </div>
-        {!userListQuery.isLoading && (
+        {!(userListQuery.isLoading || search.isSearching) && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-5 py-5">
             {postPreviews}
           </div>
         )}
-        {userListQuery.isLoading && (
+        {(userListQuery.isLoading || search.isSearching) && (
           <div className="mt-10 flex justify-center">
-            <Spinner width={40} height={40} />
+            <Spinner width={"w-20"} height={"h-20"} />
           </div>
+        )}
+        {postPreviews?.length === 0 && (
+          <div className="mt-10 text-center">No Posts to Show!</div>
         )}
         <Modal
           title={`Delete '${selectedPostToDelete?.title}' Post`}
@@ -111,7 +119,6 @@ const HomePage = () => {
           }}
         />
       </UserLayout>
-      <ToastContainer />
     </>
   );
 };
