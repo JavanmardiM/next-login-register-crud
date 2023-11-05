@@ -110,6 +110,7 @@ const HomePage = () => {
           <div className="mt-10 text-center">No Posts to Show!</div>
         )}
         <Modal
+          data-testid="delete-modal"
           title={`Delete '${selectedPostToDelete?.title}' Post`}
           data={selectedPostToDelete}
           body={deleteBody}

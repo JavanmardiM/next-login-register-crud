@@ -53,6 +53,7 @@ const PostPreview = (props: PostPreviewProps) => {
               <EditIcon />
             </Link>
             <DeleteBtn
+              data-testid="delet-modal"
               onClick={() => {
                 props.handleDeletePost(props.id);
               }}
