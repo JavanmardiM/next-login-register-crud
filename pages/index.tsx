@@ -52,10 +52,14 @@ const HomePage = () => {
     },
     {
       staleTime: 300000,
-      refetchOnMount: false,
+      refetchOnMount: true,
     }
   );
-
+  useEffect(() => {
+    if (userListQuery.error) {
+      toast.error(userListQuery.error.message);
+    }
+  }, [userListQuery]);
   const postPreviews = userListQuery.data
     ?.filter(
       (item) =>
