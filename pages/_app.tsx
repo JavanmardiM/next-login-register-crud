@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 import type { AppProps } from "next/app";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import "../styles/globals.css";
@@ -73,7 +73,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Hydrate state={pageProps.dehydratedState}>
           {isAuthorized && <Component {...pageProps} />}
         </Hydrate>
-        <ReactQueryDevtools />
+        {/* <ReactQueryDevtools /> */}
       </QueryClientProvider>
     </>
   );
