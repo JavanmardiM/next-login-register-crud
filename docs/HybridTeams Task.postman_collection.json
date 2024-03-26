@@ -1,0 +1,490 @@
+{
+	"info": {
+		"_postman_id": "5cfcc659-b8c9-4c5c-bf3a-d1be6836b4ed",
+		"name": "HybridTeams Task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 500\", function () {",
+							"  pm.response.to.have.status(500);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the 'success' field\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.have.property(\"success\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"The 'success' field value should be a boolean\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the 'message' field\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"The 'message' field is an array with at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData.message).to.be.an('array').and.to.have.lengthOf.at.least(1);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"Specialist2s3s22sada\",\n    \"email\": \"hamied.reza.ssfa4f2ss3mm@gmail.com\",\n    \"password\": \"Mazda3\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const responseJson = pm.response.json();",
+							"var bodyToken = responseJson.response;",
+							"pm.environment.set(\"Token\", bodyToken)",
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.success).to.exist;",
+							"  pm.expect(responseData.token).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field is a boolean\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Token field is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Token is in a valid format\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.token).to.match(/[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+/, \"Token is not in a valid format\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"hamied.reza.s4f2s3mm@gmail.com\",\n    \"password\": \"Mazda3\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/auth/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.success).to.exist;",
+							"  pm.expect(responseData.post_id).to.exist;",
+							"  pm.expect(responseData.title).to.exist;",
+							"  pm.expect(responseData.content).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the 'success' field is a boolean value\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the post_id field is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.post_id).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the 'title' field is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.title).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"I you go...\",\n    \"content\": \"I'll Die sweatheart....\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/blog/create",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAll Posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData).to.have.property('success');",
+							"  pm.expect(responseData).to.have.property('posts');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the 'posts' array is present in the response and contains at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.posts).to.exist.and.to.be.an('array').that.is.not.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Last update date is in a valid date format\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.posts).to.be.an('array').and.to.have.lengthOf.at.least(1);",
+							"",
+							"  responseData.posts.forEach(function (post) {",
+							"    pm.expect(post.lastUpdateDate).to.exist;",
+							"    pm.expect(post.lastUpdateDate).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+							"  });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDQxNTFlYjctZTIxMi00NTJmLThiZDktOTg4MWMxMDA2YTdlIiwiZW1haWwiOiJoYW1pZWQucmV6YS5tQGdtYWlsLmNvbSIsImlhdCI6MTY5Nzc0NTI4NCwiZXhwIjoxNjk3NzQ4ODg0fQ.hvfApLea4Ycfppn8SrmCbVnx941DuPS1RiEunuJcxh4",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/blog/getAll",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"getAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - success, message\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.success).to.exist;",
+							"  pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify that the success field is set to true\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.success).to.be.true;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate updated_at field is in a valid date format\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.message.update_blog_post_by_pk.updated_at).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$/, \"Not a valid date format\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDQxNTFlYjctZTIxMi00NTJmLThiZDktOTg4MWMxMDA2YTdlIiwiZW1haWwiOiJoYW1pZWQucmV6YS5tQGdtYWlsLmNvbSIsImlhdCI6MTY5Nzc1MTU5NiwiZXhwIjoxNjk3NzU1MTk2fQ.jHIKBmaWUP4lX0nZH6wJiuezivf0NVcKKAtJPkwwmoM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Jaja\",\n    \"content\": \"Babayaga\"\n}\n//if you dot want to change the one of them, just dont send it with your request",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/blog/2d58eb97-e34e-4e16-9d2c-ccc3feb14d4e/edit",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"2d58eb97-e34e-4e16-9d2c-ccc3feb14d4e",
+						"edit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has required fields - success and message\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.success).to.exist;",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field is a boolean\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"  pm.test(\"Message field is an object\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData.message).to.be.an('object');",
+							"  });",
+							"",
+							"",
+							"pm.test(\"Validate delete_blog_post_by_pk object and its fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.message.delete_blog_post_by_pk).to.exist.and.to.be.an('object');",
+							"  pm.expect(responseData.message.delete_blog_post_by_pk.post_id).to.exist.and.to.be.a('string');",
+							"  pm.expect(responseData.message.delete_blog_post_by_pk.title).to.exist.and.to.be.a('string');",
+							"  pm.expect(responseData.message.delete_blog_post_by_pk.content).to.exist.and.to.be.a('string');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNDQxNTFlYjctZTIxMi00NTJmLThiZDktOTg4MWMxMDA2YTdlIiwiZW1haWwiOiJoYW1pZWQucmV6YS5tQGdtYWlsLmNvbSIsImlhdCI6MTY5Nzc1MTU5NiwiZXhwIjoxNjk3NzU1MTk2fQ.jHIKBmaWUP4lX0nZH6wJiuezivf0NVcKKAtJPkwwmoM",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/blog/beb3ef5a-91aa-4986-92sb9-089fe6506f9a/delete",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"beb3ef5a-91aa-4986-92sb9-089fe6506f9a",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
